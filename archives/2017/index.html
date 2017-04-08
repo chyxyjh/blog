@@ -68,6 +68,492 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ZT-You-Don-t-Need-jQuery" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/08/ZT-You-Don-t-Need-jQuery/" class="article-date">
+  <time datetime="2017-04-08T03:38:10.000Z" itemprop="datePublished">2017-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/08/ZT-You-Don-t-Need-jQuery/">[ZT]You Don&#39;t Need jQuery</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="You-Don’t-Need-jQuery"><a href="#You-Don’t-Need-jQuery" class="headerlink" title="You Don’t Need jQuery "></a>You Don’t Need jQuery <a href="https://travis-ci.org/oneuijs/You-Dont-Need-jQuery" target="_blank" rel="external"><img src="https://travis-ci.org/oneuijs/You-Dont-Need-jQuery.svg" alt="Build Status"></a></h2><p>前端发展很快，现代浏览器原生 API 已经足够好用。我们并不需要为了操作 DOM、Event 等再学习一下 jQuery 的 API。同时由于 React、Angular、Vue 等框架的流行，直接操作 DOM 不再是好的模式，jQuery 使用场景大大减少。本项目总结了大部分 jQuery API 替代的方法，暂时只支持 IE10+ 以上浏览器。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#translations">Translations</a></li>
+<li><a href="#query-selector">Query Selector</a></li>
+<li><a href="#css--style">CSS &amp; Style</a></li>
+<li><a href="#dom-manipulation">DOM Manipulation</a></li>
+<li><a href="#ajax">Ajax</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#utilities">Utilities</a></li>
+<li><a href="#promises">Promises</a></li>
+<li><a href="#animation">Animation</a></li>
+<li><a href="#alternatives">Alternatives</a></li>
+<li><a href="#browser-support">Browser Support</a></li>
+</ol>
+<h2 id="Translations"><a href="#Translations" class="headerlink" title="Translations"></a>Translations</h2><ul>
+<li><a href="./README.ko-KR.md">한국어</a></li>
+<li><a href="./README.zh-CN.md">简体中文</a></li>
+<li><a href="./README-my.md">Bahasa Melayu</a></li>
+<li><a href="./README-id.md">Bahasa Indonesia</a></li>
+<li><a href="./README.pt-BR.md">Português(PT-BR)</a></li>
+<li><a href="./README-vi.md">Tiếng Việt Nam</a></li>
+<li><a href="./README-es.md">Español</a></li>
+<li><a href="./README-ru.md">Русский</a></li>
+<li><a href="./README-kg.md">Кыргызча</a></li>
+<li><a href="./README-tr.md">Türkçe</a></li>
+<li><a href="./README-it.md">Italiano</a></li>
+<li><a href="./README-fr.md">Français</a></li>
+<li><a href="./README-ja.md">日本語</a></li>
+<li><a href="./README-pl.md">Polski</a></li>
+</ul>
+<h2 id="Query-Selector"><a href="#Query-Selector" class="headerlink" title="Query Selector"></a>Query Selector</h2><p>常用的 class、id、属性 选择器都可以使用 <code>document.querySelector</code> 或 <code>document.querySelectorAll</code> 替代。区别是</p>
+<ul>
+<li><code>document.querySelector</code> 返回第一个匹配的 Element</li>
+<li><code>document.querySelectorAll</code> 返回所有匹配的 Element 组成的 NodeList。它可以通过 <code>[].slice.call()</code> 把它转成 Array</li>
+<li>如果匹配不到任何 Element，jQuery 返回空数组 <code>[]</code>，但 <code>document.querySelector</code> 返回 <code>null</code>，注意空指针异常。当找不到时，也可以使用 <code>||</code> 设置默认的值，如 <code>document.querySelectorAll(selector) || []</code></li>
+</ul>
+<blockquote>
+<p>注意：<code>document.querySelector</code> 和 <code>document.querySelectorAll</code> 性能很<strong>差</strong>。如果想提高性能，尽量使用 <code>document.getElementById</code>、<code>document.getElementsByClassName</code> 或 <code>document.getElementsByTagName</code>。</p>
+</blockquote>
+<ul>
+<li><p><a href="#1.0">1.0</a> <a name="1.0"></a> 选择器查询</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'selector'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'selector'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.1">1.1</a> <a name="1.1"></a> class 查询</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'.class'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'.class'</span>);</div><div class="line"></div><div class="line"><span class="comment">// or</span></div><div class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">'class'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.2">1.2</a> <a name="1.2"></a> id 查询</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'#id'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#id'</span>);</div><div class="line"></div><div class="line"><span class="comment">// or</span></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'id'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.3">1.3</a> <a name="1.3"></a> 属性查询</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'a[target=_blank]'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">'a[target=_blank]'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.4">1.4</a> <a name="1.4"></a> 后代查询</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.find(<span class="string">'li'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.querySelectorAll(<span class="string">'li'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.5">1.5</a> <a name="1.5"></a> 兄弟及上下元素</p>
+<ul>
+<li><p>兄弟元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.siblings();</div><div class="line"></div><div class="line"><span class="comment">// Native - latest, Edge13+</span></div><div class="line">[...el.parentNode.children].filter(<span class="function">(<span class="params">child</span>) =&gt;</span></div><div class="line">  child !== el</div><div class="line">);</div><div class="line"><span class="comment">// Native (alternative) - latest, Edge13+</span></div><div class="line"><span class="built_in">Array</span>.from(el.parentNode.children).filter(<span class="function">(<span class="params">child</span>) =&gt;</span></div><div class="line">  child !== el</div><div class="line">);</div><div class="line"><span class="comment">// Native - IE10+</span></div><div class="line"><span class="built_in">Array</span>.prototype.filter.call(el.parentNode.children, (child) =&gt;</div><div class="line">  child !== el</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+<li><p>上一个元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.prev();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.previousElementSibling;</div></pre></td></tr></table></figure>
+</li>
+<li><p>下一个元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// next</span></div><div class="line">$el.next();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.nextElementSibling;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#1.6">1.6</a> <a name="1.6"></a> Closest</p>
+<p>Closest 获得匹配选择器的第一个祖先元素，从当前元素开始沿 DOM 树向上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.closest(queryString);</div><div class="line"></div><div class="line"><span class="comment">// Native - Only latest, NO IE</span></div><div class="line">el.closest(selector);</div><div class="line"></div><div class="line"><span class="comment">// Native - IE10+</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">closest</span>(<span class="params">el, selector</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;</div><div class="line"></div><div class="line">  <span class="keyword">while</span> (el) &#123;</div><div class="line">    <span class="keyword">if</span> (matchesSelector.call(el, selector)) &#123;</div><div class="line">      <span class="keyword">return</span> el;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      el = el.parentElement;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.7">1.7</a> <a name="1.7"></a> Parents Until</p>
+<p>获取当前每一个匹配元素集的祖先，不包括匹配元素的本身。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.parentsUntil(selector, filter);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parentsUntil</span>(<span class="params">el, selector, filter</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> result = [];</div><div class="line">  <span class="keyword">const</span> matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;</div><div class="line"></div><div class="line">  <span class="comment">// match start from parent</span></div><div class="line">  el = el.parentElement;</div><div class="line">  <span class="keyword">while</span> (el &amp;&amp; !matchesSelector.call(el, selector)) &#123;</div><div class="line">    <span class="keyword">if</span> (!filter) &#123;</div><div class="line">      result.push(el);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">if</span> (matchesSelector.call(el, filter)) &#123;</div><div class="line">        result.push(el);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    el = el.parentElement;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.8">1.8</a> <a name="1.8"></a> Form</p>
+<ul>
+<li><p>Input/Textarea</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'#my-input'</span>).val();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.querySelector(<span class="string">'#my-input'</span>).value;</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取 e.currentTarget 在 <code>.radio</code> 中的数组索引</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'.radio'</span>).index(e.currentTarget);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.prototype.indexOf.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.radio'</span>), e.currentTarget);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#1.9">1.9</a> <a name="1.9"></a> Iframe Contents</p>
+<p>jQuery 对象的 iframe <code>contents()</code> 返回的是 iframe 内的 <code>document</code></p>
+<ul>
+<li><p>Iframe contents</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$iframe.contents();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">iframe.contentDocument;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Iframe Query</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$iframe.contents().find(<span class="string">'.css'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">iframe.contentDocument.querySelectorAll(<span class="string">'.css'</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#1.10">1.10</a> <a name="1.10"></a> 获取 body</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'body'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">document</span>.body;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#1.11">1.11</a> <a name="1.11"></a> 获取或设置属性</p>
+<ul>
+<li><p>获取属性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.attr(<span class="string">'foo'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.getAttribute(<span class="string">'foo'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>设置属性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery, note that this works in memory without change the DOM</span></div><div class="line">$el.attr(<span class="string">'foo'</span>, <span class="string">'bar'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.setAttribute(<span class="string">'foo'</span>, <span class="string">'bar'</span>);</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取 <code>data-</code> 属性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.data(<span class="string">'foo'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (use `getAttribute`)</span></div><div class="line">el.getAttribute(<span class="string">'data-foo'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (use `dataset` if only need to support IE 11+)</span></div><div class="line">el.dataset[<span class="string">'foo'</span>];</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="CSS-amp-Style"><a href="#CSS-amp-Style" class="headerlink" title="CSS &amp; Style"></a>CSS &amp; Style</h2><ul>
+<li><p><a href="#2.1">2.1</a> <a name="2.1"></a> CSS</p>
+<ul>
+<li><p>Get style</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.css(<span class="string">"color"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="comment">// 注意：此处为了解决当 style 值为 auto 时，返回 auto 的问题</span></div><div class="line"><span class="keyword">const</span> win = el.ownerDocument.defaultView;</div><div class="line"></div><div class="line"><span class="comment">// null 的意思是不返回伪类元素</span></div><div class="line">win.getComputedStyle(el, <span class="literal">null</span>).color;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Set style</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.css(&#123; <span class="attr">color</span>: <span class="string">"#ff0011"</span> &#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.style.color = <span class="string">'#ff0011'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Get/Set Styles</p>
+<p>注意，如果想一次设置多个 style，可以参考 oui-dom-utils 中 <a href="https://github.com/oneuijs/oui-dom-utils/blob/master/src/index.js#L194" target="_blank" rel="external">setStyles</a> 方法</p>
+</li>
+<li><p>Add class</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.addClass(className);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.classList.add(className);</div></pre></td></tr></table></figure>
+</li>
+<li><p>Remove class</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.removeClass(className);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.classList.remove(className);</div></pre></td></tr></table></figure>
+</li>
+<li><p>has class</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.hasClass(className);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.classList.contains(className);</div></pre></td></tr></table></figure>
+</li>
+<li><p>Toggle class</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.toggleClass(className);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.classList.toggle(className);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#2.2">2.2</a> <a name="2.2"></a> Width &amp; Height</p>
+<p>Width 与 Height 获取方法相同，下面以 Height 为例：</p>
+<ul>
+<li><p>Window height</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// window height</span></div><div class="line">$(<span class="built_in">window</span>).height();</div><div class="line"></div><div class="line"><span class="comment">// 含 scrollbar</span></div><div class="line"><span class="built_in">window</span>.document.documentElement.clientHeight;</div><div class="line"></div><div class="line"><span class="comment">// 不含 scrollbar，与 jQuery 行为一致</span></div><div class="line"><span class="built_in">window</span>.innerHeight;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Document height</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="built_in">document</span>).height();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="keyword">const</span> body = <span class="built_in">document</span>.body;</div><div class="line"><span class="keyword">const</span> html = <span class="built_in">document</span>.documentElement;</div><div class="line"><span class="keyword">const</span> height = <span class="built_in">Math</span>.max(</div><div class="line">  body.offsetHeight,</div><div class="line">  body.scrollHeight,</div><div class="line">  html.clientHeight,</div><div class="line">  html.offsetHeight,</div><div class="line">  html.scrollHeight</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+<li><p>Element height</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.height();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getHeight</span>(<span class="params">el</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> styles = <span class="keyword">this</span>.getComputedStyle(el);</div><div class="line">  <span class="keyword">const</span> height = el.offsetHeight;</div><div class="line">  <span class="keyword">const</span> borderTopWidth = <span class="built_in">parseFloat</span>(styles.borderTopWidth);</div><div class="line">  <span class="keyword">const</span> borderBottomWidth = <span class="built_in">parseFloat</span>(styles.borderBottomWidth);</div><div class="line">  <span class="keyword">const</span> paddingTop = <span class="built_in">parseFloat</span>(styles.paddingTop);</div><div class="line">  <span class="keyword">const</span> paddingBottom = <span class="built_in">parseFloat</span>(styles.paddingBottom);</div><div class="line">  <span class="keyword">return</span> height - borderBottomWidth - borderTopWidth - paddingTop - paddingBottom;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 精确到整数（border-box 时为 height - border 值，content-box 时为 height + padding 值）</span></div><div class="line">el.clientHeight;</div><div class="line"></div><div class="line"><span class="comment">// 精确到小数（border-box 时为 height 值，content-box 时为 height + padding + border 值）</span></div><div class="line">el.getBoundingClientRect().height;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#2.3">2.3</a> <a name="2.3"></a> Position &amp; Offset</p>
+<ul>
+<li><p>Position</p>
+<p>获取元素相对于父元素的偏移坐标。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.position();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">&#123; <span class="attr">left</span>: el.offsetLeft, <span class="attr">top</span>: el.offsetTop &#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Offset</p>
+<p>获取元素相对于 document 的坐标。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.offset();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getOffset</span> (<span class="params">el</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> box = el.getBoundingClientRect();</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">top</span>: box.top + <span class="built_in">window</span>.pageYOffset - <span class="built_in">document</span>.documentElement.clientTop,</div><div class="line">    <span class="attr">left</span>: box.left + <span class="built_in">window</span>.pageXOffset - <span class="built_in">document</span>.documentElement.clientLeft</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#2.4">2.4</a> <a name="2.4"></a> Scroll Top</p>
+<p>获取元素滚动条垂直位置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="built_in">window</span>).scrollTop();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">(<span class="built_in">document</span>.documentElement &amp;&amp; <span class="built_in">document</span>.documentElement.scrollTop) || <span class="built_in">document</span>.body.scrollTop;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="DOM-Manipulation"><a href="#DOM-Manipulation" class="headerlink" title="DOM Manipulation"></a>DOM Manipulation</h2><ul>
+<li><p><a href="#3.1">3.1</a> <a name="3.1"></a> Remove</p>
+<p>从 DOM 中移除元素。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.remove();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.parentNode.removeChild(el);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.2">3.2</a> <a name="3.2"></a> Text</p>
+<ul>
+<li><p>Get text</p>
+<p>获取元素及所有子代的内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.text();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.textContent;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Set text</p>
+<p>设置元素内容为指定文本。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.text(string);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.textContent = string;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#3.3">3.3</a> <a name="3.3"></a> HTML</p>
+<ul>
+<li><p>Get HTML</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.html();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.innerHTML;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Set HTML</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.html(htmlString);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.innerHTML = htmlString;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><a href="#3.4">3.4</a> <a name="3.4"></a> Append</p>
+<p>Append 插入到子节点的末尾</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.append(<span class="string">"&lt;div id='container'&gt;hello&lt;/div&gt;"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (HTML string)</span></div><div class="line">el.insertAdjacentHTML(<span class="string">'beforeend'</span>, <span class="string">'&lt;div id="container"&gt;Hello World&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (Element)</span></div><div class="line">el.appendChild(newEl);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.5">3.5</a> <a name="3.5"></a> Prepend</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.prepend(<span class="string">"&lt;div id='container'&gt;hello&lt;/div&gt;"</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (HTML string)</span></div><div class="line">el.insertAdjacentHTML(<span class="string">'afterbegin'</span>, <span class="string">'&lt;div id="container"&gt;Hello World&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (Element)</span></div><div class="line">el.insertBefore(newEl, el.firstChild);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.6">3.6</a> <a name="3.6"></a> insertBefore</p>
+<p>在选中元素前插入新节点</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$newEl.insertBefore(queryString);</div><div class="line"></div><div class="line"><span class="comment">// Native (HTML string)</span></div><div class="line">el.insertAdjacentHTML(<span class="string">'beforebegin '</span>, <span class="string">'&lt;div id="container"&gt;Hello World&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (Element)</span></div><div class="line"><span class="keyword">const</span> el = <span class="built_in">document</span>.querySelector(selector);</div><div class="line"><span class="keyword">if</span> (el.parentNode) &#123;</div><div class="line">  el.parentNode.insertBefore(newEl, el);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.7">3.7</a> <a name="3.7"></a> insertAfter</p>
+<p>在选中元素后插入新节点</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$newEl.insertAfter(queryString);</div><div class="line"></div><div class="line"><span class="comment">// Native (HTML string)</span></div><div class="line">el.insertAdjacentHTML(<span class="string">'afterend'</span>, <span class="string">'&lt;div id="container"&gt;Hello World&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native (Element)</span></div><div class="line"><span class="keyword">const</span> el = <span class="built_in">document</span>.querySelector(selector);</div><div class="line"><span class="keyword">if</span> (el.parentNode) &#123;</div><div class="line">  el.parentNode.insertBefore(newEl, el.nextSibling);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.8">3.8</a> <a name="3.8"></a> is</p>
+<p>如果匹配查询选择器则 <code>true</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery - Notice `is` also work with `function` or `elements` which is not concerned here</span></div><div class="line">$el.is(selector);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.matches(selector);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.9">3.9</a> <a name="3.9"></a> clone</p>
+<p>创建元素的深度拷贝</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.clone();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.cloneNode();</div><div class="line"></div><div class="line"><span class="comment">// For Deep clone , set param as `true`</span></div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.10">3.10</a> <a name="3.10"></a> empty</p>
+<p>移除所有子节点</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.empty();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.innerHTML = <span class="string">''</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.11">3.11</a> <a name="3.11"></a> wrap</p>
+<p>使用 HTML 结构包装每个元素</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'.inner'</span>).wrap(<span class="string">'&lt;div class="wrapper"&gt;&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.prototype.forEach.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.inner'</span>), (el) =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> wrapper = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</div><div class="line">  wrapper.className = <span class="string">'wrapper'</span>;</div><div class="line">  el.parentNode.insertBefore(wrapper, el);</div><div class="line">  el.parentNode.removeChild(el);</div><div class="line">  wrapper.appendChild(el);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.12">3.12</a> <a name="3.12"></a> unwrap</p>
+<p>从 DOM 中移除匹配元素的父集</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'.inner'</span>).unwrap();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.prototype.forEach.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.inner'</span>), (el) =&gt; &#123;</div><div class="line">  <span class="built_in">Array</span>.prototype.forEach.call(el.childNodes, (child) =&gt; &#123;</div><div class="line">    el.parentNode.insertBefore(child, el);</div><div class="line">  &#125;);</div><div class="line">  el.parentNode.removeChild(el);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#3.13">3.13</a> <a name="3.13"></a> replaceWith</p>
+<p>使用提供的新内容替换匹配元素的内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="string">'.inner'</span>).replaceWith(<span class="string">'&lt;div class="outer"&gt;&lt;/div&gt;'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.prototype.forEach.call(<span class="built_in">document</span>.querySelectorAll(<span class="string">'.inner'</span>), (el) =&gt; &#123;</div><div class="line">  <span class="keyword">const</span> outer = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</div><div class="line">  outer.className = <span class="string">'outer'</span>;</div><div class="line">  el.parentNode.insertBefore(outer, el);</div><div class="line">  el.parentNode.removeChild(el);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><p><a href="https://fetch.spec.whatwg.org/" target="_blank" rel="external">Fetch API</a> 是用于替换 XMLHttpRequest 处理 ajax 的新标准，Chrome 和 Firefox 均支持，旧浏览器可以使用 polyfills 提供支持。</p>
+<p>IE9+ 请使用 <a href="http://github.com/github/fetch" target="_blank" rel="external">github/fetch</a>，IE8+ 请使用 <a href="https://github.com/camsong/fetch-ie8/" target="_blank" rel="external">fetch-ie8</a>，JSONP 请使用 <a href="https://github.com/camsong/fetch-jsonp" target="_blank" rel="external">fetch-jsonp</a>。</p>
+<ul>
+<li><p><a href="#4.1">4.1</a> <a name="4.1"></a> 从服务器读取数据并替换匹配元素的内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(selector).load(url, completeCallback)</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">fetch(url).then(<span class="function"><span class="params">data</span> =&gt;</span> data.text()).then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">document</span>.querySelector(selector).innerHTML = data</div><div class="line">&#125;).then(completeCallback)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h2><p>完整地替代命名空间和事件代理，链接到 <a href="https://github.com/oneuijs/oui-dom-events" target="_blank" rel="external">https://github.com/oneuijs/oui-dom-events</a></p>
+<ul>
+<li><p><a href="#5.0">5.0</a> <a name="5.0"></a> Document ready by <code>DOMContentLoaded</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(<span class="built_in">document</span>).ready(eventHandler);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="comment">// 检测 DOMContentLoaded 是否已完成</span></div><div class="line"><span class="keyword">if</span> (<span class="built_in">document</span>.readyState === <span class="string">'complete'</span> || <span class="built_in">document</span>.readyState !== <span class="string">'loading'</span>) &#123;</div><div class="line">  eventHandler();</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="built_in">document</span>.addEventListener(<span class="string">'DOMContentLoaded'</span>, eventHandler);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#5.1">5.1</a> <a name="5.1"></a> 使用 on 绑定事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.on(eventName, eventHandler);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.addEventListener(eventName, eventHandler);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#5.2">5.2</a> <a name="5.2"></a> 使用 off 解绑事件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.off(eventName, eventHandler);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.removeEventListener(eventName, eventHandler);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#5.3">5.3</a> <a name="5.3"></a> Trigger</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$(el).trigger(<span class="string">'custom-event'</span>, &#123;<span class="attr">key1</span>: <span class="string">'data'</span>&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.CustomEvent) &#123;</div><div class="line">  <span class="keyword">const</span> event = <span class="keyword">new</span> CustomEvent(<span class="string">'custom-event'</span>, &#123;<span class="attr">detail</span>: &#123;<span class="attr">key1</span>: <span class="string">'data'</span>&#125;&#125;);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="keyword">const</span> event = <span class="built_in">document</span>.createEvent(<span class="string">'CustomEvent'</span>);</div><div class="line">  event.initCustomEvent(<span class="string">'custom-event'</span>, <span class="literal">true</span>, <span class="literal">true</span>, &#123;<span class="attr">key1</span>: <span class="string">'data'</span>&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">el.dispatchEvent(event);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Utilities"><a href="#Utilities" class="headerlink" title="Utilities"></a>Utilities</h2><p>大部分实用工具都能在 native API 中找到. 其他高级功能可以选用专注于该领域的稳定性和性能都更好的库来代替，推荐 <a href="https://lodash.com" target="_blank" rel="external">lodash</a>。</p>
+<ul>
+<li><p><a href="#6.1">6.1</a> <a name="6.1"></a> 基本工具</p>
+<ul>
+<li>isArray</li>
+</ul>
+<p>检测参数是不是数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isArray(range);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.isArray(range);</div></pre></td></tr></table></figure>
+<ul>
+<li>isWindow</li>
+</ul>
+<p>检测参数是不是 window。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isWindow(obj);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isWindow</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> obj !== <span class="literal">null</span> &amp;&amp; obj !== <span class="literal">undefined</span> &amp;&amp; obj === obj.window;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>inArray</li>
+</ul>
+<p>在数组中搜索指定值并返回索引 (找不到则返回 -1)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.inArray(item, array);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">array.indexOf(item) &gt; <span class="number">-1</span>;</div><div class="line"></div><div class="line"><span class="comment">// ES6-way</span></div><div class="line">array.includes(item);</div></pre></td></tr></table></figure>
+<ul>
+<li>isNumeric</li>
+</ul>
+<p>检测传入的参数是不是数字。<br>Use <code>typeof</code> to decide the type or the <code>type</code> example for better accuracy.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isNumeric(item);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNumeric</span>(<span class="params">value</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> type = <span class="keyword">typeof</span> value;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> (type === <span class="string">'number'</span> || type === <span class="string">'string'</span>) &amp;&amp; !<span class="built_in">Number</span>.isNaN(value - <span class="built_in">Number</span>.parseFloat(value));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>isFunction</li>
+</ul>
+<p>检测传入的参数是不是 JavaScript 函数对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isFunction(item);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isFunction</span>(<span class="params">item</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> item === <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> type = <span class="built_in">Object</span>.prototype.toString(item);</div><div class="line">  <span class="keyword">return</span> type === <span class="string">'[object Function]'</span> || type === <span class="string">'[object GeneratorFunction]'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>isEmptyObject</li>
+</ul>
+<p>检测对象是否为空 (包括不可枚举属性).</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isEmptyObject(obj);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isEmptyObject</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>isPlainObject</li>
+</ul>
+<p>检测是不是扁平对象 (使用 “{}” 或 “new Object” 创建).</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.isPlainObject(obj);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isPlainObject</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> (obj) !== <span class="string">'object'</span> || obj.nodeType || obj !== <span class="literal">null</span> &amp;&amp; obj !== <span class="literal">undefined</span> &amp;&amp; obj === obj.window) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (obj.constructor &amp;&amp;</div><div class="line">      !<span class="built_in">Object</span>.prototype.hasOwnProperty.call(obj.constructor.prototype, <span class="string">'isPrototypeOf'</span>)) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>extend</li>
+</ul>
+<p>合并多个对象的内容到第一个对象。<br>object.assign 是 ES6 API，也可以使用 <a href="https://github.com/ljharb/object.assign" target="_blank" rel="external">polyfill</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.extend(&#123;&#125;, defaultOpts, opts);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Object</span>.assign(&#123;&#125;, defaultOpts, opts);</div></pre></td></tr></table></figure>
+<ul>
+<li>trim</li>
+</ul>
+<p>移除字符串头尾空白。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.trim(string);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">string.trim();</div></pre></td></tr></table></figure>
+<ul>
+<li>map</li>
+</ul>
+<p>将数组或对象转化为包含新内容的数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.map(array, (value, index) =&gt; &#123;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">array.map(<span class="function">(<span class="params">value, index</span>) =&gt;</span> &#123;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>each</li>
+</ul>
+<p>轮询函数，可用于平滑的轮询对象和数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.each(array, (index, value) =&gt; &#123;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">array.forEach(<span class="function">(<span class="params">value, index</span>) =&gt;</span> &#123;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>grep</li>
+</ul>
+<p>找到数组中符合过滤函数的元素。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.grep(array, (value, index) =&gt; &#123;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">array.filter(<span class="function">(<span class="params">value, index</span>) =&gt;</span> &#123;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>type</li>
+</ul>
+<p>检测对象的 JavaScript [Class] 内部类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.type(obj);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">item</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> reTypeOf = <span class="regexp">/(?:^\[object\s(.*?)\]$)/</span>;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(item)</div><div class="line">    .replace(reTypeOf, <span class="string">'$1'</span>)</div><div class="line">    .toLowerCase();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>merge</li>
+</ul>
+<p>合并第二个数组内容到第一个数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.merge(array1, array2);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="comment">// But concat function doesn't remove duplicate items.</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">...args</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> [].concat(...args)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>now</li>
+</ul>
+<p>返回当前时间的数字呈现。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.now();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Date</span>.now();</div></pre></td></tr></table></figure>
+<ul>
+<li>proxy</li>
+</ul>
+<p>传入函数并返回一个新函数，该函数绑定指定上下文。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.proxy(fn, context);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">fn.bind(context);</div></pre></td></tr></table></figure>
+<ul>
+<li>makeArray</li>
+</ul>
+<p>类数组对象转化为真正的 JavaScript 数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.makeArray(arrayLike);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Array</span>.prototype.slice.call(arrayLike);</div><div class="line"></div><div class="line"><span class="comment">// ES6-way</span></div><div class="line"><span class="built_in">Array</span>.from(arrayLike);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#6.2">6.2</a> <a name="6.2"></a> 包含</p>
+<p>检测 DOM 元素是不是其他 DOM 元素的后代.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.contains(el, child);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el !== child &amp;&amp; el.contains(child);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#6.3">6.3</a> <a name="6.3"></a> Globaleval</p>
+<p>全局执行 JavaScript 代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.globaleval(code);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Globaleval</span>(<span class="params">code</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</div><div class="line">  script.text = code;</div><div class="line"></div><div class="line">  <span class="built_in">document</span>.head.appendChild(script).parentNode.removeChild(script);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Use eval, but context of eval is current, context of $.Globaleval is global.</span></div><div class="line"><span class="built_in">eval</span>(code);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#6.4">6.4</a> <a name="6.4"></a> 解析</p>
+<ul>
+<li>parseHTML</li>
+</ul>
+<p>解析字符串为 DOM 节点数组.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.parseHTML(htmlString);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseHTML</span>(<span class="params">string</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> context = <span class="built_in">document</span>.implementation.createHTMLDocument();</div><div class="line"></div><div class="line">  <span class="comment">// Set the base href for the created document so any parsed elements with URLs</span></div><div class="line">  <span class="comment">// are based on the document's URL</span></div><div class="line">  <span class="keyword">const</span> base = context.createElement(<span class="string">'base'</span>);</div><div class="line">  base.href = <span class="built_in">document</span>.location.href;</div><div class="line">  context.head.appendChild(base);</div><div class="line"></div><div class="line">  context.body.innerHTML = string;</div><div class="line">  <span class="keyword">return</span> context.body.children;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>parseJSON</li>
+</ul>
+<p>传入格式正确的 JSON 字符串并返回 JavaScript 值.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.parseJSON(str);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">JSON</span>.parse(str);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Promises"><a href="#Promises" class="headerlink" title="Promises"></a>Promises</h2><p>Promise 代表异步操作的最终结果。jQuery 用它自己的方式处理 promises，原生 JavaScript 遵循 <a href="http://promises-aplus.github.io/promises-spec/" target="_blank" rel="external">Promises/A+</a> 标准实现了最小 API 来处理 promises。</p>
+<ul>
+<li><p><a href="#7.1">7.1</a> <a name="7.1"></a> done, fail, always</p>
+<p><code>done</code> 会在 promise 解决时调用，<code>fail</code> 会在 promise 拒绝时调用，<code>always</code> 总会调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$promise.done(doneCallback).fail(failCallback).always(alwaysCallback)</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">promise.then(doneCallback, failCallback).then(alwaysCallback, alwaysCallback)</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#7.2">7.2</a> <a name="7.2"></a> when</p>
+<p><code>when</code> 用于处理多个 promises。当全部 promises 被解决时返回，当任一 promise 被拒绝时拒绝。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$.when($promise1, $promise2).done(<span class="function">(<span class="params">promise1Result, promise2Result</span>) =&gt;</span> &#123;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="built_in">Promise</span>.all([$promise1, $promise2]).then([promise1Result, promise2Result] =&gt; &#123;&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#7.3">7.3</a> <a name="7.3"></a> Deferred</p>
+<p>Deferred 是创建 promises 的一种方式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> defer = <span class="keyword">new</span> $.Deferred();</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span>(<span class="literal">true</span>) &#123;</div><div class="line">      defer.resolve(<span class="string">'some_value_computed_asynchronously'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      defer.reject(<span class="string">'failed'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> defer.promise();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</div><div class="line">        resolve(<span class="string">'some_value_computed_asynchronously'</span>);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        reject(<span class="string">'failed'</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;, <span class="number">1000</span>);</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// Deferred way</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">defer</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> deferred = &#123;&#125;;</div><div class="line">  <span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">    deferred.resolve = resolve;</div><div class="line">    deferred.reject = reject;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  deferred.promise = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> promise;</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> deferred;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">asyncFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> defer = defer();</div><div class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">if</span>(<span class="literal">true</span>) &#123;</div><div class="line">      defer.resolve(<span class="string">'some_value_computed_asynchronously'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      defer.reject(<span class="string">'failed'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> defer.promise();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h2><ul>
+<li><p><a href="#8.1">8.1</a> <a name="8.1"></a> Show &amp; Hide</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.show();</div><div class="line">$el.hide();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="comment">// 更多 show 方法的细节详见 https://github.com/oneuijs/oui-dom-utils/blob/master/src/index.js#L363</span></div><div class="line">el.style.display = <span class="string">''</span>|<span class="string">'inline'</span>|<span class="string">'inline-block'</span>|<span class="string">'inline-table'</span>|<span class="string">'block'</span>;</div><div class="line">el.style.display = <span class="string">'none'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.2">8.2</a> <a name="8.2"></a> Toggle</p>
+<p>显示或隐藏元素。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.toggle();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="keyword">if</span> (el.ownerDocument.defaultView.getComputedStyle(el, <span class="literal">null</span>).display === <span class="string">'none'</span>) &#123;</div><div class="line">  el.style.display = <span class="string">''</span>|<span class="string">'inline'</span>|<span class="string">'inline-block'</span>|<span class="string">'inline-table'</span>|<span class="string">'block'</span>;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  el.style.display = <span class="string">'none'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.3">8.3</a> <a name="8.3"></a> FadeIn &amp; FadeOut</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.fadeIn(<span class="number">3000</span>);</div><div class="line">$el.fadeOut(<span class="number">3000</span>);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.style.transition = <span class="string">'opacity 3s'</span>;</div><div class="line"><span class="comment">// fadeIn</span></div><div class="line">el.style.opacity = <span class="string">'1'</span>;</div><div class="line"><span class="comment">// fadeOut</span></div><div class="line">el.style.opacity = <span class="string">'0'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.4">8.4</a> <a name="8.4"></a> FadeTo</p>
+<p>调整元素透明度。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.fadeTo(<span class="string">'slow'</span>,<span class="number">0.15</span>);</div><div class="line"><span class="comment">// Native</span></div><div class="line">el.style.transition = <span class="string">'opacity 3s'</span>; <span class="comment">// 假设 'slow' 等于 3 秒</span></div><div class="line">el.style.opacity = <span class="string">'0.15'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.5">8.5</a> <a name="8.5"></a> FadeToggle</p>
+<p>动画调整透明度用来显示或隐藏。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.fadeToggle();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.style.transition = <span class="string">'opacity 3s'</span>;</div><div class="line"><span class="keyword">const</span> &#123; opacity &#125; = el.ownerDocument.defaultView.getComputedStyle(el, <span class="literal">null</span>);</div><div class="line"><span class="keyword">if</span> (opacity === <span class="string">'1'</span>) &#123;</div><div class="line">  el.style.opacity = <span class="string">'0'</span>;</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  el.style.opacity = <span class="string">'1'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.6">8.6</a> <a name="8.6"></a> SlideUp &amp; SlideDown</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.slideUp();</div><div class="line">$el.slideDown();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="keyword">const</span> originHeight = <span class="string">'100px'</span>;</div><div class="line">el.style.transition = <span class="string">'height 3s'</span>;</div><div class="line"><span class="comment">// slideUp</span></div><div class="line">el.style.height = <span class="string">'0px'</span>;</div><div class="line"><span class="comment">// slideDown</span></div><div class="line">el.style.height = originHeight;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.7">8.7</a> <a name="8.7"></a> SlideToggle</p>
+<p>滑动切换显示或隐藏。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.slideToggle();</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line"><span class="keyword">const</span> originHeight = <span class="string">'100px'</span>;</div><div class="line">el.style.transition = <span class="string">'height 3s'</span>;</div><div class="line"><span class="keyword">const</span> &#123; height &#125; = el.ownerDocument.defaultView.getComputedStyle(el, <span class="literal">null</span>);</div><div class="line"><span class="keyword">if</span> (<span class="built_in">parseInt</span>(height, <span class="number">10</span>) === <span class="number">0</span>) &#123;</div><div class="line">  el.style.height = originHeight;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span> &#123;</div><div class="line"> el.style.height = <span class="string">'0px'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p><a href="#8.8">8.8</a> <a name="8.8"></a> Animate</p>
+<p>执行一系列 CSS 属性动画。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// jQuery</span></div><div class="line">$el.animate(&#123; params &#125;, speed);</div><div class="line"></div><div class="line"><span class="comment">// Native</span></div><div class="line">el.style.transition = <span class="string">'all '</span> + speed;</div><div class="line"><span class="built_in">Object</span>.keys(params).forEach(<span class="function">(<span class="params">key</span>) =&gt;</span></div><div class="line">  el.style[key] = params[key];</div><div class="line">)</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="#目录">⬆ 回到顶部</a></strong></p>
+<h2 id="Alternatives"><a href="#Alternatives" class="headerlink" title="Alternatives"></a>Alternatives</h2><ul>
+<li><a href="http://youmightnotneedjquery.com/" target="_blank" rel="external">你可能不需要 jQuery (You Might Not Need jQuery)</a> - 如何使用原生 JavaScript 实现通用事件，元素，ajax 等用法。</li>
+<li><a href="http://github.com/npm-dom" target="_blank" rel="external">npm-dom</a> 以及 <a href="http://github.com/webmodules" target="_blank" rel="external">webmodules</a> - 在 NPM 上提供独立 DOM 模块的组织</li>
+</ul>
+<h2 id="Browser-Support"><a href="#Browser-Support" class="headerlink" title="Browser Support"></a>Browser Support</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome"></th>
+<th><img src="https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox"></th>
+<th><img src="https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt="IE"></th>
+<th><img src="https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera"></th>
+<th><img src="https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Latest ✔</td>
+<td>Latest ✔</td>
+<td>10+ ✔</td>
+<td>Latest ✔</td>
+<td>6.1+ ✔</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="License"><a href="#License" class="headerlink" title="License"></a>License</h1><p>MIT</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/08/ZT-You-Don-t-Need-jQuery/" data-id="cj18poh8m000173ksqmtr8sqf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/03/05/hello-world/" class="article-date">
@@ -103,7 +589,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/03/05/hello-world/" data-id="cj18pl9hx00005rksf031kts6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/03/05/hello-world/" data-id="cj18poh8h000073kswjcawack" class="article-share-link">Share</a>
       
       
     </footer>
@@ -130,7 +616,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li></ul>
     </div>
   </div>
 
@@ -141,6 +627,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/04/08/ZT-You-Don-t-Need-jQuery/">[ZT]You Don&#39;t Need jQuery</a>
+          </li>
         
           <li>
             <a href="/2017/03/05/hello-world/">Hello World</a>
