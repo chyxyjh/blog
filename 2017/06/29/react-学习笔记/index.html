@@ -19,7 +19,7 @@ Hello World1234ReactDOM.render(  &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;
 JSX
 JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式
 123">
-<meta property="og:updated_time" content="2017-06-29T08:30:49.000Z">
+<meta property="og:updated_time" content="2017-06-29T10:06:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react 学习笔记">
 <meta name="twitter:description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文react官方文档
@@ -159,11 +159,24 @@ JSX被赋值给一个变量或常量是可以在两端加入小括号来调整�
 <li>组件的state应该是封装在内部的，只有当他选择传递时才可以暴露在外，比如父组件可以通过设置子组件属性的方式与子组件通信，这是一种自顶向下的数据流<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;FormattedDate date=&#123;<span class="keyword">this</span>.state.date&#125; /&gt;</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<h2 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h2><ul>
+<li>可以通过如下方式进行事件绑定<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;button onClick=&#123;activateLasers&#125;&gt;</div><div class="line">  Activate Lasers</div><div class="line">&lt;<span class="regexp">/button&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>但是不能通过<code>return false;</code>来阻止默认行为发生，一定要调用<code>e.preventDefault();</code>实现</p>
+<ul>
+<li>事件绑定触发的方法可以定义在class内，之后通过<code>this</code>访问</li>
+<li>如果事件绑定的函数中有对this的访问，那么<strong>需要在constructor中进行this的绑定</strong><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>原因在于我们是通过<code>onClick={this.handleClick}</code>读取的函数方法，而不是<code>this.handleClick()</code><br>方法二是借助<em>property initializer syntax</em>，如下(create-react-app中可用)<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// This syntax ensures `this` is bound within handleClick.</span></div><div class="line"><span class="comment">// Warning: this is *experimental* syntax.</span></div><div class="line">handleClick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'this is:'</span>, <span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>方法三基于箭头函数,因为箭头函数的作用域在定义时被决定<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoggingButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  handleClick() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'this is:'</span>, <span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="comment">// This syntax ensures `this` is bound within handleClick</span></div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;button onClick=&#123;(e) =&gt; this.handleClick(e)&#125;&gt;</div><div class="line">        Click me</div><div class="line">      &lt;/button&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>方法三中每次渲染时会绑定不同的函数，因而可能触发组件的再次渲染，因而推荐方法一、二</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/06/29/react-学习笔记/" data-id="cj4i68rfs0002azksbbm04st1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/06/29/react-学习笔记/" data-id="cj4i9o3we0002npks8lxp5cne" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
