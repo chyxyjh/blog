@@ -68,6 +68,102 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-react-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/06/29/react-学习笔记/" class="article-date">
+  <time datetime="2017-06-29T01:36:48.000Z" itemprop="datePublished">2017-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/29/react-学习笔记/">react 学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="react-学习笔记"><a href="#react-学习笔记" class="headerlink" title="react 学习笔记"></a>react 学习笔记</h1><p>本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文<a href="https://facebook.github.io/react/docs/hello-world.html" target="_blank" rel="external">react官方文档</a></p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDOM.render(</div><div class="line">  &lt;h1&gt;Hello, world!&lt;/h1&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
+<h2 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a>JSX</h2><ul>
+<li><p>JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;h1&gt;</div><div class="line">    Hello, &#123;formatName(user)&#125;!</div><div class="line">  &lt;/h1&gt;</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+<li><p>JSX中可以运行js，需要在两端加入大括号</p>
+</li>
+<li>JSX表达式就像一种JS对象一样，可以被赋值，传参，return</li>
+<li>JSX中可以设置属性，也可以用大括号将JS表达式写入属性中</li>
+<li>空标签，需要最后用<code>/&gt;</code>结尾</li>
+<li><code>class</code>需要写为<code>className</code>,<code>tabindex</code>需要写为<code>tabIndex</code></li>
+<li>JSX最后通过<code>React.createElement</code>将JSX转化为React Object</li>
+</ul>
+<h2 id="渲染Element"><a href="#渲染Element" class="headerlink" title="渲染Element"></a>渲染Element</h2><ul>
+<li>element不用于组件</li>
+<li>element是一成不变的，一旦元素被创建，就不能修改它的children和属性了，代表了某一时刻UI的快照</li>
+<li>截止目前，更新UI的方法只有新建一个element然后再次传入<code>React.render</code></li>
+<li>React app大多只调用一次<code>ReactDOM.render</code></li>
+<li>React只在必要时更新DOM，即使每次均传入一个新的元素到<code>React.render</code>，也只有其中被更新的子元素会被修改。</li>
+</ul>
+<h2 id="组件和属性-props"><a href="#组件和属性-props" class="headerlink" title="组件和属性(props)"></a>组件和属性(props)</h2><ul>
+<li>组件定义可以通过函数或者类<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Welcome</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &lt;h1&gt;Hello, &#123;props.name&#125;&lt;/h1&gt;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Welcome</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> &lt;h1&gt;Hello, &#123;this.props.name&#125;&lt;/h1&gt;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>基于<code>class</code>会有额外的特性，后续展开</p>
+<ul>
+<li>自定义组件应大写首字母</li>
+<li>组件使用需要组件定义在作用域内</li>
+<li>组件之间可以互相封装，<strong>组件最外层一定要返回一个单独的根元素</strong></li>
+<li><strong>属性是只可读的</strong></li>
+</ul>
+<h2 id="State和生命周期"><a href="#State和生命周期" class="headerlink" title="State和生命周期"></a>State和生命周期</h2><ul>
+<li>相对于props，state是私有且完全被组件控制的</li>
+<li>如果定义组件的state，就需要采用类的方法整理组件(class语法)，这里需要注意基于class开发后，props需要通过<code>this.props</code>读取，state同样通过<code>this.state</code>读取</li>
+<li>需要给组件加入构造函数来初始化状态<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>注意由于继承时子类没有自己的<code>this</code>，一定要调用<code>super(props)</code></strong></p>
+<ul>
+<li>组件的生命周期中，初始化被称为<code>mounting</code>，卸载被称为<code>unmounting</code>,所以可以在组件的这两个阶段定义方法<code>componentDidMount</code>和<code>cpmponentWillUnmount</code></li>
+<li>组件的一些相关属性可以直接保存在<code>this</code>上，当然这些属性应该是不和渲染直接相关的，否则就要保存在<code>this.state</code>中</li>
+<li>组件的一些方法也可以像<code>render</code>一样定于与class上，之后通过<code>this.XXX()</code>调用</li>
+<li>除去render之外的方法中可以通过<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.setState(&#123;</div><div class="line">    <span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>从而来修改state</p>
+<ul>
+<li>不要直接修改state，这不会重新触发渲染，一定采取<code>setStete</code>的方法，只有在constructor中才可以通过<code>this.state</code>来初始化state</li>
+<li><p>state和props的改动可能是异步更新的，所以如果需要基于前一状态来更新state，应该通过如下方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>.setState(<span class="function">(<span class="params">prevState, props</span>) =&gt;</span> (&#123;</div><div class="line">  <span class="attr">counter</span>: prevState.counter + props.increment</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>setState</code>函数内部是在marge的，被改动的会被更新，未改动的会被保存</p>
+</li>
+<li>组件的state应该是封装在内部的，只有当他选择传递时才可以暴露在外，比如父组件可以通过设置子组件属性的方式与子组件通信，这是一种自顶向下的数据流<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;FormattedDate date=&#123;<span class="keyword">this</span>.state.date&#125; /&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/06/29/react-学习笔记/" data-id="cj4i68rfs0002azksbbm04st1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-aroundu-proto" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/06/26/aroundu-proto/" class="article-date">
@@ -139,7 +235,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/06/26/aroundu-proto/" data-id="cj4dzpdrf0002wjksvqyb9a8i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/06/26/aroundu-proto/" data-id="cj4i68rfm0001azksy8nf2xcv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -625,7 +721,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/08/ZT-You-Don-t-Need-jQuery/" data-id="cj4dzpdrb0001wjks5k4dhppe" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/08/ZT-You-Don-t-Need-jQuery/" data-id="cj4i68rfu0003azks1mj7b3um" class="article-share-link">Share</a>
       
       
     </footer>
@@ -670,7 +766,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/03/05/hello-world/" data-id="cj4dzpdqy0000wjksevhheb5y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/03/05/hello-world/" data-id="cj4i68rfe0000azkss4hl8qxp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -689,9 +785,23 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/react/" style="font-size: 10px;">react</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
@@ -708,6 +818,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/06/29/react-学习笔记/">react 学习笔记</a>
+          </li>
         
           <li>
             <a href="/2017/06/26/aroundu-proto/">aroundu proto</a>
