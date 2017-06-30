@@ -5,28 +5,25 @@
   
   <title>react 学习笔记 | Bruce Chen&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文react官方文档
+  <meta name="description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，对应的React版本v15.6.1。原文react官方文档
 Hello World1234ReactDOM.render(  &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt;,  document.getElementById(&apos;root&apos;));
 JSX
-JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式
-123">
+JSX被赋值给一个变量或常量是可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="react 学习笔记">
 <meta property="og:url" content="http://yoursite.com/2017/06/29/react-学习笔记/index.html">
 <meta property="og:site_name" content="Bruce Chen's Blog">
-<meta property="og:description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文react官方文档
+<meta property="og:description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，对应的React版本v15.6.1。原文react官方文档
 Hello World1234ReactDOM.render(  &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt;,  document.getElementById(&apos;root&apos;));
 JSX
-JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式
-123">
-<meta property="og:updated_time" content="2017-06-29T10:06:21.000Z">
+JSX被赋值给一个变量或常量是可">
+<meta property="og:updated_time" content="2017-06-30T06:55:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react 学习笔记">
-<meta name="twitter:description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文react官方文档
+<meta name="twitter:description" content="react 学习笔记本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，对应的React版本v15.6.1。原文react官方文档
 Hello World1234ReactDOM.render(  &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt;,  document.getElementById(&apos;root&apos;));
 JSX
-JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式
-123">
+JSX被赋值给一个变量或常量是可">
   
     <link rel="alternate" href="/atom.xml" title="Bruce Chen&#39;s Blog" type="application/atom+xml">
   
@@ -101,7 +98,7 @@ JSX被赋值给一个变量或常量是可以在两端加入小括号来调整�
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="react-学习笔记"><a href="#react-学习笔记" class="headerlink" title="react 学习笔记"></a>react 学习笔记</h1><p>本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，原文<a href="https://facebook.github.io/react/docs/hello-world.html" target="_blank" rel="external">react官方文档</a></p>
+        <h1 id="react-学习笔记"><a href="#react-学习笔记" class="headerlink" title="react 学习笔记"></a>react 学习笔记</h1><p>本文是我在重新学习react文档时针对自己之前忽视或易被忽视细节的整理，对应的React版本v15.6.1。原文<a href="https://facebook.github.io/react/docs/hello-world.html" target="_blank" rel="external">react官方文档</a></p>
 <h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDOM.render(</div><div class="line">  &lt;h1&gt;Hello, world!&lt;/h1&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
 <h2 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a>JSX</h2><ul>
 <li><p>JSX被赋值给一个变量或常量是可以在两端加入小括号来调整格式</p>
@@ -116,7 +113,7 @@ JSX被赋值给一个变量或常量是可以在两端加入小括号来调整�
 <li>JSX最后通过<code>React.createElement</code>将JSX转化为React Object</li>
 </ul>
 <h2 id="渲染Element"><a href="#渲染Element" class="headerlink" title="渲染Element"></a>渲染Element</h2><ul>
-<li>element不用于组件</li>
+<li>element不同于组件</li>
 <li>element是一成不变的，一旦元素被创建，就不能修改它的children和属性了，代表了某一时刻UI的快照</li>
 <li>截止目前，更新UI的方法只有新建一个element然后再次传入<code>React.render</code></li>
 <li>React app大多只调用一次<code>ReactDOM.render</code></li>
@@ -172,11 +169,57 @@ JSX被赋值给一个变量或常量是可以在两端加入小括号来调整�
 <p>原因在于我们是通过<code>onClick={this.handleClick}</code>读取的函数方法，而不是<code>this.handleClick()</code><br>方法二是借助<em>property initializer syntax</em>，如下(create-react-app中可用)<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// This syntax ensures `this` is bound within handleClick.</span></div><div class="line"><span class="comment">// Warning: this is *experimental* syntax.</span></div><div class="line">handleClick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'this is:'</span>, <span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>方法三基于箭头函数,因为箭头函数的作用域在定义时被决定<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoggingButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  handleClick() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'this is:'</span>, <span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="comment">// This syntax ensures `this` is bound within handleClick</span></div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;button onClick=&#123;(e) =&gt; this.handleClick(e)&#125;&gt;</div><div class="line">        Click me</div><div class="line">      &lt;/button&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>方法三中每次渲染时会绑定不同的函数，因而可能触发组件的再次渲染，因而推荐方法一、二</p>
+<h2 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h2><ul>
+<li>可以根据state和props进行判断，return出不同的渲染结果</li>
+<li>可以将不同JSX保存在变量中，之后在return中调用这个变量</li>
+<li><p>可以通过短路运算符&amp;&amp;来写出更加简明的条件渲染</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Mailbox</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> unreadMessages = props.unreadMessages;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello!&lt;/h1&gt;</div><div class="line">      &#123;unreadMessages.length &gt; 0 &amp;&amp;</div><div class="line">        &lt;h2&gt;</div><div class="line">          You have &#123;unreadMessages.length&#125; unread messages.</div><div class="line">        &lt;/h2&gt;</div><div class="line">      &#125;</div><div class="line">    &lt;/div&gt;</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>也可以通过三目运算符完成条件渲染</p>
+</li>
+<li>如果希望一个组件不显示，可以在render中return null。这只使组件不显示，不会影响其生命周期</li>
+</ul>
+<h2 id="Lists-and-Keys"><a href="#Lists-and-Keys" class="headerlink" title="Lists and Keys"></a>Lists and Keys</h2><ul>
+<li><p>在JSX中用{}包裹一个数组元素（元素用JSX表示），那么就可以渲染出一个元素list。其中每个元素可以再添加属性，如key。如果希望渲染一个list的元素，一定要加上key属性来帮助react区分元素。<strong>list中的key一定要不同</strong><br>key最好选用不同的字符串，不建议采用index进行区分</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const todoItems = todos.map((todo) =&gt;</div><div class="line">  &lt;li key=&#123;todo.id&#125;&gt;</div><div class="line">    &#123;todo.text&#125;</div><div class="line">  &lt;/li&gt;</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+<li><p>key应该在被从array通过map得到list时添加，而不是在list中每一项的子元素上再添加</p>
+</li>
+<li>key在通过数组渲染的siblings之间应该是互不相同的，但是不用组的siblings之间是可以存在重复的</li>
+<li>key只是为了帮助React的暗示信息，并不会真的被传送到组件上，如组件需要，可以再加入其它props</li>
+</ul>
+<h2 id="Forms"><a href="#Forms" class="headerlink" title="Forms"></a>Forms</h2><h3 id="Controlled-Components"><a href="#Controlled-Components" class="headerlink" title="Controlled Components"></a>Controlled Components</h3><ul>
+<li>指值被React所控制的输入表单元素</li>
+<li>表单元素的value一旦在JSX中被设置，如<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;input type=<span class="string">"text"</span> value=&#123;<span class="keyword">this</span>.state.value&#125; onChange=&#123;<span class="keyword">this</span>.handleChange&#125; /&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>那么它所显示的值就是<code>this.state.value</code>，通过<code>onChange</code>中绑定的函数修改<code>this.state.value</code>，从而控制这个表单元素输入的值，让其随用户输入而更新</p>
+<ul>
+<li>用户的输入时对表单元素的修改和有效性检测等，此时就被直接控制了</li>
+<li>select组件，通过设置<code>value</code>与某个option中的value相同，来表示这个option被选中</li>
+<li>对于一个组件内的多个表单元素，可以通过设置<code>name</code>，在一个函数通过<code>e.target.name</code>来区分更改state，这样就可以用一个函数来监听多个元素的输入</li>
+<li>uncontrolled component在某些情境下，可能是更灵活的针对表单的方案</li>
+</ul>
+<h2 id="Lifting-State-Up"><a href="#Lifting-State-Up" class="headerlink" title="Lifting State Up"></a>Lifting State Up</h2><p>对于一个在多个组件间需要同步的数据，可以将其提升到最近的共同祖先组件的stete上，之后通过props传递给各个子组件，使各个子组件中取到同一个值。也是是<strong>自顶向下</strong>数据流思想的一种体现</p>
+<h2 id="Composition-vs-Inheritance（组成与继承）"><a href="#Composition-vs-Inheritance（组成与继承）" class="headerlink" title="Composition vs Inheritance（组成与继承）"></a>Composition vs Inheritance（组成与继承）</h2><ul>
+<li>类似boxes模式的组件，可以通过<code>children</code>属性访问在其内部写入的其他通过JSX表达的组件<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">FancyBorder</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div className=&#123;'FancyBorder FancyBorder-' + props.color&#125;&gt;</div><div class="line">      &#123;props.children&#125;</div><div class="line">    &lt;/div&gt;</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">WelcomeDialog</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;FancyBorder color="blue"&gt;</div><div class="line">      &lt;h1 className="Dialog-title"&gt;</div><div class="line">        Welcome</div><div class="line">      &lt;/h1&gt;</div><div class="line">      &lt;p className="Dialog-message"&gt;</div><div class="line">        Thank you for visiting our spacecraft!</div><div class="line">      &lt;/p&gt;</div><div class="line">    &lt;/FancyBorder&gt;</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>一些组件可以理解为一些通用组件的特例化，这种特殊组件可以返回被设置了特有props值得通用组件实现</li>
+<li>综上，用组合的方法开发各个组件是推荐的，继承并不十分实用</li>
+</ul>
+<h2 id="Thinking-in-React"><a href="#Thinking-in-React" class="headerlink" title="Thinking in React"></a>Thinking in React</h2><ul>
+<li>基于React开发，可以先从静态页面入手，此时不应引入state，因为state应面向交互</li>
+<li>衡量是否采用state三个角度：是否来自父组件的传递，是否总是不变的，是否可以通过其他state或者props得到</li>
+<li>React数据流除<strong>自顶向下</strong>，同样可以<strong>自下向上</strong>，这需要将在顶层组件中设置修改顶层state的方法，之后将这个方法作为属性传入子组件，子组件调用这个方法，即可修改顶层组件中的state</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/06/29/react-学习笔记/" data-id="cj4i9o3we0002npks8lxp5cne" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/06/29/react-学习笔记/" data-id="cj4ji8glu000001ks76d5byis" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react/">react</a></li></ul>
